@@ -17,7 +17,7 @@ import requests
 import sys
 
 
-__VERSION__ = "0.0.1"
+__VERSION__ = "0.0.2"
 
 
 class Pastee(object):
