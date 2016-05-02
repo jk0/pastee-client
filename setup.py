@@ -22,7 +22,7 @@ setuptools.setup(
     version=pastee.__VERSION__,
     author="Josh Kearney",
     author_email="josh@jk0.org",
-    description="A client for Pastee, the secure pastbin.",
+    description="A client for Pastee, the secure pastebin.",
     license="Apache License, Version 2.0",
     py_modules=[
         "pastee",

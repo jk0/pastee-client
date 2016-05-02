@@ -1,7 +1,7 @@
 Pastee Client
 =============
 
-A client for Pastee, the secure pastbin.
+A client for Pastee, the secure pastebin.
 
 Install
 -------
