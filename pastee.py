@@ -24,6 +24,7 @@ class Pastee(object):
     """A Pastee client."""
 
     def __init__(self):
+        """Setup the Pastee session."""
         self.session = requests.Session()
         self.session.headers.update({
             "Content-Type": "application/x-www-form-urlencoded",
@@ -31,6 +32,7 @@ class Pastee(object):
         })
 
     def create(self, content, key=None, lexer="text", ttl=30):
+        """Create a Pastee."""
         api_endpoint = "https://pastee.org/submit"
         data = {
             "content": content,
@@ -46,9 +48,10 @@ class Pastee(object):
 
 
 def main():
+    """Run the app."""
     parser = argparse.ArgumentParser(version=__VERSION__)
     parser.add_argument("-f", "--file", help="upload a file")
-    parser.add_argument("-k", "--key", help="encrypt the paste with a key")
+    parser.add_argument("-k", "--key", help="encrypt the pastee with a key")
     parser.add_argument("-l", "--lexer", default="text",
                         help="use a particular lexer (default: text)")
     parser.add_argument("-t", "--ttl", default=30,
