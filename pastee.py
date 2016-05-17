@@ -13,18 +13,21 @@
 #   limitations under the License.
 
 import argparse
+import os
 import requests
 import sys
 
 
-__VERSION__ = "0.0.2"
+__VERSION__ = "0.0.3"
 
 
-class Pastee(object):
+class PasteeClient(object):
     """A Pastee client."""
 
-    def __init__(self):
+    def __init__(self, endpoint):
         """Setup the Pastee session."""
+        self.endpoint = endpoint or "https://pastee.org/submit"
+
         self.session = requests.Session()
         self.session.headers.update({
             "Content-Type": "application/x-www-form-urlencoded",
@@ -33,7 +36,6 @@ class Pastee(object):
 
     def create(self, content, key=None, lexer="text", ttl=30):
         """Create a Pastee."""
-        api_endpoint = "https://pastee.org/submit"
         data = {
             "content": content,
             "lexer": lexer,
@@ -44,28 +46,59 @@ class Pastee(object):
             data["encrypt"] = "checked"
             data["key"] = key
 
-        return self.session.post(api_endpoint, data=data)
+        return self.session.post(self.endpoint, data=data, verify=False)
+
+
+class PyholeClient(object):
+    """A Pyhole client."""
+
+    def __init__(self, endpoint):
+        """Setup the Pyhole session."""
+        self.endpoint = endpoint or "https://pyhole.planet-labs.com/pastes"
+
+        self.session = requests.Session()
+        self.session.headers.update({
+            "Content-Type": "application/json",
+        })
+
+    def create(self, content):
+        """Create a paste."""
+        json = {
+            "content": content
+        }
+        return self.session.post(self.endpoint, json=json, verify=False)
 
 
 def main():
     """Run the app."""
+    # NOTE(jk0): Disable unnecessary requests logging.
+    requests.packages.urllib3.disable_warnings()
+
+    endpoint = os.environ.get("PASTE_ENDPOINT")
+
     parser = argparse.ArgumentParser(version=__VERSION__)
     parser.add_argument("-f", "--file", help="upload a file")
-    parser.add_argument("-k", "--key", help="encrypt the pastee with a key")
-    parser.add_argument("-l", "--lexer", default="text",
-                        help="use a particular lexer (default: text)")
-    parser.add_argument("-t", "--ttl", default=30,
-                        help="days before paste expires (default: 30)")
+    #parser.add_argument("-k", "--key", help="encrypt the pastee with a key")
+    #parser.add_argument("-l", "--lexer", default="text",
+    #                    help="use a particular lexer (default: text)")
+    #parser.add_argument("-t", "--ttl", default=30,
+    #                    help="days before paste expires (default: 30)")
+
     parsed_args = parser.parse_args()
 
     if parsed_args.file:
-        with open(parsed_args.file, "r") as open_file:
-            content = open_file.read()
+        with open(parsed_args.file, "r") as fp:
+            content = fp.read()
     else:
         content = sys.stdin.read()
 
-    paste = Pastee().create(content, key=parsed_args.key,
-                            lexer=parsed_args.lexer, ttl=parsed_args.ttl)
+    #paste = PasteeClient(endpoint).create(
+    #    content,
+    #    key=parsed_args.key,
+    #    lexer=parsed_args.lexer,
+    #    ttl=parsed_args.ttl)
+    paste = PyholeClient(endpoint).create(content)
+
     print paste.url
 
 
