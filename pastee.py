@@ -18,7 +18,7 @@ import requests
 import sys
 
 
-__VERSION__ = "0.0.3"
+__VERSION__ = "0.0.4"
 
 
 class PasteeClient(object):
@@ -46,7 +46,7 @@ class PasteeClient(object):
             data["encrypt"] = "checked"
             data["key"] = key
 
-        return self.session.post(self.endpoint, data=data, verify=False)
+        return self.session.post(self.endpoint, data=data)
 
 
 class PyholeClient(object):
@@ -66,7 +66,7 @@ class PyholeClient(object):
         json = {
             "content": content
         }
-        return self.session.post(self.endpoint, json=json, verify=False)
+        return self.session.post(self.endpoint, json=json)
 
 
 def main():
