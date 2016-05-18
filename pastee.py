@@ -18,7 +18,7 @@ import requests
 import sys
 
 
-__VERSION__ = "0.0.4"
+__VERSION__ = "0.0.5"
 
 
 class PasteeClient(object):
@@ -34,10 +34,10 @@ class PasteeClient(object):
             "Accept": "text/plain"
         })
 
-    def create(self, content, key=None, lexer="text", ttl=30):
+    def create(self, paste, key=None, lexer="text", ttl=30):
         """Create a Pastee."""
         data = {
-            "content": content,
+            "content": paste,
             "lexer": lexer,
             "ttl": int(ttl * 86400)
         }
@@ -61,10 +61,10 @@ class PyholeClient(object):
             "Content-Type": "application/json",
         })
 
-    def create(self, content):
+    def create(self, paste):
         """Create a paste."""
         json = {
-            "content": content
+            "paste": paste
         }
         return self.session.post(self.endpoint, json=json)
 
@@ -88,16 +88,16 @@ def main():
 
     if parsed_args.file:
         with open(parsed_args.file, "r") as fp:
-            content = fp.read()
+            paste = fp.read()
     else:
-        content = sys.stdin.read()
+        paste = sys.stdin.read()
 
     #paste = PasteeClient(endpoint).create(
-    #    content,
+    #    paste,
     #    key=parsed_args.key,
     #    lexer=parsed_args.lexer,
     #    ttl=parsed_args.ttl)
-    paste = PyholeClient(endpoint).create(content)
+    paste = PyholeClient(endpoint).create(paste)
 
     print paste.url
 
