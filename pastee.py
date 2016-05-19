@@ -16,9 +16,10 @@ import argparse
 import os
 import requests
 import sys
+import webbrowser
 
 
-__VERSION__ = "0.0.5"
+__VERSION__ = "0.0.6"
 
 
 class PasteeClient(object):
@@ -99,7 +100,7 @@ def main():
     #    ttl=parsed_args.ttl)
     paste = PyholeClient(endpoint).create(paste)
 
-    print paste.url
+    webbrowser.open_new_tab(paste.url)
 
 
 if __name__ == "__main__":
