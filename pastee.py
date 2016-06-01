@@ -19,7 +19,7 @@ import sys
 import webbrowser
 
 
-__VERSION__ = "0.0.6"
+__VERSION__ = "0.0.7"
 
 
 class PasteeClient(object):
@@ -62,11 +62,16 @@ class PyholeClient(object):
             "Content-Type": "application/json",
         })
 
-    def create(self, paste):
+    def create(self, paste, network=None, target=None):
         """Create a paste."""
         json = {
             "paste": paste
         }
+
+        if network and target:
+            json["network"] = network
+            json["target"] = target
+
         return self.session.post(self.endpoint, json=json)
 
 
@@ -79,6 +84,8 @@ def main():
 
     parser = argparse.ArgumentParser(version=__VERSION__)
     parser.add_argument("-f", "--file", help="upload a file")
+    parser.add_argument("-n", "--network", help="target network")
+    parser.add_argument("-t", "--target", help="target user or channel")
     #parser.add_argument("-k", "--key", help="encrypt the pastee with a key")
     #parser.add_argument("-l", "--lexer", default="text",
     #                    help="use a particular lexer (default: text)")
@@ -98,7 +105,10 @@ def main():
     #    key=parsed_args.key,
     #    lexer=parsed_args.lexer,
     #    ttl=parsed_args.ttl)
-    paste = PyholeClient(endpoint).create(paste)
+    paste = PyholeClient(endpoint).create(
+        paste,
+        network=parsed_args.network,
+        target=parsed_args.target)
 
     webbrowser.open_new_tab(paste.url)
 
