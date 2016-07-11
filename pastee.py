@@ -19,7 +19,7 @@ import sys
 import webbrowser
 
 
-__VERSION__ = "0.0.7"
+__VERSION__ = "0.0.8"
 
 
 class PasteeClient(object):
@@ -111,6 +111,8 @@ def main():
         target=parsed_args.target)
 
     webbrowser.open_new_tab(paste.url)
+
+    print paste.url
 
 
 if __name__ == "__main__":
