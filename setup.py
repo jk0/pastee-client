@@ -28,7 +28,7 @@ setuptools.setup(
         "pastee",
     ],
     install_requires=[
-        "requests"
+        "requests>=2.10.0"
     ],
     setup_requires=[
         "flake8",
