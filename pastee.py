@@ -19,7 +19,7 @@ import sys
 import webbrowser
 
 
-__VERSION__ = "0.0.11"
+__VERSION__ = "0.0.12"
 
 
 class PasteeClient(object):
@@ -55,7 +55,7 @@ class PyholeClient(object):
 
     def __init__(self, endpoint):
         """Setup the Pyhole session."""
-        self.endpoint = endpoint or "https://pyhole.planet-labs.com/pastes"
+        self.endpoint = endpoint or "http://pyhole.services.gateway.powerrangers.prod.k8s.planet-labs.com/pastes"
 
         self.session = requests.Session()
         self.session.headers.update({
