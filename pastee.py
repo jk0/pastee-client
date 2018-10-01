@@ -55,6 +55,7 @@ class PyholeClient(object):
 
     def __init__(self, endpoint):
         """Setup the Pyhole session."""
+        # TODO(jk0): Make this configurable.
         self.endpoint = endpoint or "http(s)://<hostname>/pastes"
 
         self.session = requests.Session()
